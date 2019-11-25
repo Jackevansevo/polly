@@ -1,5 +1,6 @@
 module Main exposing (main)
 
+import Time
 import Array
 import Browser
 import Browser.Navigation as Nav
@@ -61,4 +62,4 @@ init _ url key =
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-    recieveToken GotToken
+    Sub.batch [Time.every (30 * 1000) RefreshToken, recieveToken GotToken]

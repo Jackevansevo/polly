@@ -6,11 +6,12 @@ import Browser.Navigation as Nav
 import Cmds exposing (createPoll, fetchPoll)
 import Model exposing (Model, Option, Page(..), PollForm, PollState(..), Selection(..), Vote(..))
 import Msgs exposing (Msg(..))
+import Ports exposing (requestToken)
 import Routing
 import Set
 import Url
 import Url.Builder as Builder
-import Ports exposing (requestToken)
+
 
 removeFromList : Int -> List a -> List a
 removeFromList i xs =
@@ -84,7 +85,7 @@ update msg model =
                     ( model, Cmd.none )
 
         ( CreatePoll token, Creating poll ) ->
-            ( model, createPoll poll token)
+            ( model, createPoll poll token )
 
         ( GotPoll result, _ ) ->
             case result of
@@ -160,6 +161,9 @@ update msg model =
                         in
                         ( { model | page = Voting (Success newPoll vote) }, Cmd.none )
 
+        ( RefreshToken time, _ ) ->
+            ( model , requestToken "home" )
+
         ( LinkClicked urlRequest, _ ) ->
             case urlRequest of
                 Browser.Internal url ->
@@ -189,14 +193,14 @@ update msg model =
 
                 Routing.Poll pid ->
                     ( { model | url = url, route = newRoute, page = Voting Loading }
-                    , Cmd.batch [fetchPoll pid, (requestToken "vote")]
+                    , Cmd.batch [ fetchPoll pid, requestToken "vote" ]
                     )
 
                 Routing.NotFound ->
                     ( { model | page = NotFoundPage }, Cmd.none )
 
-        (GotToken token, _) ->
-            ({ model | token = Just token } , Cmd.none)
+        ( GotToken token, _ ) ->
+            ( { model | token = Just token }, Cmd.none )
 
         ( _, _ ) ->
             ( model, Cmd.none )

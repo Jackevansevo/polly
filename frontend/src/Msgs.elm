@@ -1,5 +1,6 @@
 module Msgs exposing (Msg(..))
 
+import Time exposing (Posix)
 import Browser
 import Json.Encode as E
 import Http
@@ -24,3 +25,4 @@ type Msg
     | ToggleMultiple
     | Searched String
     | GotToken String
+    | RefreshToken Posix
