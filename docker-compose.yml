@@ -35,6 +35,7 @@ services:
   api:
     container_name: api
     build: ./backend
+    restart: always
     environment:
         - HOST=redis
         - DEBUG
