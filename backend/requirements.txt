@@ -5,4 +5,4 @@ ujson==1.35
 uvicorn==0.10.0
 walrus==0.8.0
 starlette-prometheus==0.3.0
-httpx==0.7.7
+httpx==0.23.0
